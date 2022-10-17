@@ -5,6 +5,6 @@ __pycache__
 WRCSenv
 db.sqlite3
 .DS_Store
-.notes
+/notes
 .memo.py
 localsettings.py
