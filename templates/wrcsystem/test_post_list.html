@@ -18,7 +18,7 @@
       </input>
     {% endfor %}
 
-    <form action="/" method="POST" id="post">
+    <form action="/test_list" method="POST" id="post">
       {% csrf_token %}<br>
       <input type="textbox" name="title" id="title" placeholder="title">
       <input type="textbox" name="text" id="text" placeholder="text">
@@ -28,7 +28,7 @@
       {% csrf_token %}
       <input type="submit" value="削除">
     </form>
-    <a href="http://127.0.0.1:8000">更新</a>
+    <a href="https://test811.pythonanywhere.com/test_list">更新</a>
   </main>
   <footer>
     フッター
