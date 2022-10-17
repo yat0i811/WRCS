@@ -1,0 +1,9 @@
+*.pyc
+*~
+/.vscode
+__pycache__
+WRCSenv
+db.sqlite3
+.DS_Store
+.notes
+.memo.py
