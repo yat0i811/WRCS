@@ -128,8 +128,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-#STATICFILES_DIRS = [STATIC_DIR,]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATICFILES_DIRS = [STATIC_DIR,] #ローカル環境
+STATIC_ROOT = os.path.join(BASE_DIR, 'static') #本番環境
 
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = "/media/"
@@ -141,7 +141,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
-
 
 try:
     from .local_settings import *

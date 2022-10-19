@@ -5,9 +5,9 @@ from .models import Account
 
 class TestPostForm(forms.ModelForm):
 
-  class Meta:
-    model = TestPost
-    fields = ('title', 'text')
+    class Meta:
+        model = TestPost
+        fields = ('title', 'text')
 
 # アカウントフォームクラス作成
 class AccountForm(forms.ModelForm):

@@ -35,18 +35,18 @@ def delete(request, *args, **kwargs):
     id_list = request.POST.getlist("delete")
     print(id_list)
     for id in id_list:
-      content = TestPost.objects.filter(id=id).first()
-      TestPost.delete(content)
+        content = TestPost.objects.filter(id=id).first()
+        TestPost.delete(content)
     datas = TestPost.objects.all()
     return render(request, 'wrcsystem/test_post_list.html', {'datas': datas})
 
 @csrf_exempt
 def raspost(request):
-  context = TestPost(title=request.POST["title"],text=request.POST["text"])
-  context.save()
-  print(context)
-  print("RAS-POST-OK")
-  return render(request, 'wrcsystem/ras_post.html')
+    context = TestPost(title=request.POST["title"],text=request.POST["text"])
+    context.save()
+    print(context)
+    print("RAS-POST-OK")
+    return render(request, 'wrcsystem/ras_post.html')
 
 test_list = TestViews.as_view()
 
@@ -58,10 +58,8 @@ def Login(request):
         # フォーム入力のユーザーID・パスワード取得
         ID = request.POST.get('userid')
         Pass = request.POST.get('password')
-
         # Djangoの認証機能
         user = authenticate(username=ID, password=Pass)
-
         # ユーザー認証
         if user:
             #ユーザーアクティベート判定
