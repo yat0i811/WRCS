@@ -19,7 +19,7 @@
           <div class="col-3"><a class="header_link underline" href="{% url 'index' %}">HOME</a></div>
         {% if user.is_authenticated %}
           <div class="col-3"><a class="header_link underline" href="{% url 'test_list' %}">test_list</a></div>
-          <div class="col-3"><a class="header_link underline" href="{% url 'index' %}">null</a></div>
+          <div class="col-3"><a class="header_link underline" href="{% url 'test_list' %}">null</a></div>
           <div class="col-3"><a class="header_link underline" href="{% url 'index' %}">null</a></div>
         {% endif %}
       </div>

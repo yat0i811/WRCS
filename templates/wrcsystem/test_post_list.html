@@ -12,24 +12,25 @@
           <div><h2><p id="RealtimeClockArea"></p></h2></div>
         </div>
         {% for data in datas %}
-          <h3>------------------------</h3>
+          <h3>------------------------------------------------------------------------</h3>
           <input type="checkbox" name="delete" form="delete" value={{data.id}}>
             {{ data.title }} : {{ data.text }} : {{ data.created_date }}
           </input>
         {% endfor %}
-        <h3>------------------------</h3>
-        <form action="/test_list" method="POST" id="post">
-          {% csrf_token %}<br>
-          <input type="textbox" name="title" id="title" placeholder="title" class= "span4 form-control">
-          <input type="textbox" name="text" id="text" placeholder="text" class="span4 form-control">
-          <br><br>
-          <input type="submit" value="追加" class="btn btn-outline-success">
-        </form><br>
+        <h3>------------------------------------------------------------------------</h3>
         <form action="/delete" method="POST" id="delete">
           {% csrf_token %}
           <input type="submit" value="削除" class="btn btn-outline-danger">
         </form><br>
-        <a href="{% url 'test_list' %}" class="btn btn-outline-primary">更新</a>
+        <form action="/test_list" method="POST" id="post">
+          {% csrf_token %}<br>
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4"><input type="textbox" name="title" id="title" placeholder="title" class= "form-control"></div>
+            <div class="col-4"><input type="textbox" name="text" id="text" placeholder="text" class="form-control"></div>
+            <input type="submit" value="追加" class="btn btn-outline-success col-2">
+            <div>
+        </form><br>
       </div>
     </div>
   </div>
