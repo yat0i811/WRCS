@@ -14,8 +14,8 @@ class TestPost(models.Model):
 
 class WaterTemperature(models.Model):
     RaspberryPi_Name = models.CharField(max_length=16)
-    celsius = models.FloatField(decimal_places=3) #摂氏温度
-    fahrenheit = models.FloatField(decimal_places=3) #華氏温度
+    celsius = models.DecimalField(max_digits=5,decimal_places=3) #摂氏温度
+    fahrenheit = models.DecimalField(max_digits=5,decimal_places=3) #華氏温度
     created_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
