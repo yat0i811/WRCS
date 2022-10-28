@@ -1,7 +1,7 @@
 import requests
 
 def slack_post(post_text):
-  TOKEN = 'xoxb-4159801049456-4295338328721-xxpc4pV5J42D07l83DycIgtt'
+  TOKEN = 'xoxb-4159801049456-4295338328721-1XmmFo7PyPg2zz4ppRLfYC3j'
   CHANNEL = 'bot-space'
   
   url = "https://slack.com/api/chat.postMessage"
