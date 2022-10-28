@@ -3,7 +3,7 @@ from django.views.generic import TemplateView # テンプレートタグ
 from .forms import AccountForm, AddAccountForm # ユーザーアカウントフォーム
 
 from django.utils import timezone
-from .models import TestPost
+from .models import TestPost, WaterTemperature
 from .forms import TestPostForm
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
@@ -15,6 +15,9 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+# slack機能
+from .slack_post import slack_post
+
 class TestViews(LoginRequiredMixin,View):
   def get(self, request, *args, **kwargs):
     datas = TestPost.objects.all()
@@ -24,13 +27,31 @@ class TestViews(LoginRequiredMixin,View):
   def post(self, request, *args, **kwargs):
     context = TestPost(title=request.POST["title"],text=request.POST["text"])
     context.save()
-    print(context)
+    print(context.text) 
+    slack_post(context.text)
     datas = TestPost.objects.all()
     print("POST-OK")
     return render(request, 'wrcsystem/test_post_list.html', {'datas': datas})
 
+class WaterTemperatureViews(LoginRequiredMixin,View):
+  def get(self, request, *args, **kwargs):
+    datas = WaterTemperature.objects.all()
+    print("GET-OK")
+    return render(request, 'wrcsystem/water_temperature_list.html', {'datas': datas})
+
+  def post(self, request, *args, **kwargs):
+    fahrenheit = (float(request.POST["celsius"])*9/5)+32
+    context = WaterTemperature(RaspberryPi_Name=request.POST["RaspberryPi_Name"],celsius=request.POST["celsius"],fahrenheit=fahrenheit)
+    context.save()
+    print(context) 
+    slack_post(context)
+    datas = WaterTemperature.objects.all()
+    print("POST-OK")
+    return render(request, 'wrcsystem/water_temperature_list.html', {'datas': datas})
+
+
 @login_required
-def delete(request, *args, **kwargs):
+def delete_test(request, *args, **kwargs):
     print("DELETE-OK")
     id_list = request.POST.getlist("delete")
     print(id_list)
@@ -40,15 +61,36 @@ def delete(request, *args, **kwargs):
     datas = TestPost.objects.all()
     return render(request, 'wrcsystem/test_post_list.html', {'datas': datas})
 
+
+@login_required
+def delete_water_temperature(request, *args, **kwargs):
+    print("DELETE-OK")
+    id_list = request.POST.getlist("delete")
+    print(id_list)
+    for id in id_list:
+        content = WaterTemperature.objects.filter(id=id).first()
+        WaterTemperature.delete(content)
+    datas = WaterTemperature.objects.all()
+    return render(request, 'wrcsystem/water_temperature_list.html', {'datas': datas})
+
 @csrf_exempt
-def raspost(request):
+def raspost_test(request):
     context = TestPost(title=request.POST["title"],text=request.POST["text"])
     context.save()
     print(context)
     print("RAS-POST-OK")
     return render(request, 'wrcsystem/ras_post.html')
 
+@csrf_exempt
+def raspost_water(request):
+    context = WaterTemperature(RaspberryPi_Name=request.POST["RaspberryPi_Name"],celsius=request.POST["celsius"],fahrenheit=request.POST["fahrenheit"])
+    context.save()
+    print(context)
+    print("RAS-POST-OK")
+    return render(request, 'wrcsystem/ras_post.html')
+
 test_list = TestViews.as_view()
+water_temperature_list = WaterTemperatureViews.as_view()
 
 
 #ログイン

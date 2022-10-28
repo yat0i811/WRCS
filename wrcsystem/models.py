@@ -1,3 +1,4 @@
+from venv import create
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
@@ -10,6 +11,15 @@ class TestPost(models.Model):
 
     def __str__(self):
         return self.title
+
+class WaterTemperature(models.Model):
+    RaspberryPi_Name = models.CharField(max_length=16)
+    celsius = models.FloatField() #摂氏温度
+    fahrenheit = models.FloatField() #華氏温度
+    created_date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.RaspberryPi_Name
 
 # ユーザーアカウントのモデルクラス
 class Account(models.Model):
