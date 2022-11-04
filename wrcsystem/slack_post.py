@@ -24,7 +24,7 @@ def slack_post_water(RaspberryPi_Name,celsius,fahrenheit):
   headers = {"Authorization": "Bearer "+TOKEN}
   data  = {
     'channel': CHANNEL,
-    'text': "ラズパイ名：" + str(RaspberryPi_Name) + "\n" + "摂氏温度：" + str(celsius) + "\n" + "華氏温度" + str(fahrenheit),
+    'text': "ラズパイ名：" + str(RaspberryPi_Name) + "\n" + "摂氏温度：" + str(celsius) + "°C" + "\n" + "華氏温度：" + "°F" + str(fahrenheit),
   }
   r = requests.post(url, headers=headers, data=data)
   print(r)
