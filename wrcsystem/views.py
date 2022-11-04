@@ -16,7 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # slack機能
-from .slack_post import slack_post
+from .slack_post import slack_post_test, slack_post_water
 
 class TestViews(LoginRequiredMixin,View):
   def get(self, request, *args, **kwargs):
@@ -28,23 +28,24 @@ class TestViews(LoginRequiredMixin,View):
     context = TestPost(title=request.POST["title"],text=request.POST["text"])
     context.save()
     print(context.text) 
-    slack_post(context.text)
+    slack_post_test(context.title,context.text)
     datas = TestPost.objects.all()
     print("POST-OK")
     return render(request, 'wrcsystem/test_post_list.html', {'datas': datas})
 
 class WaterTemperatureViews(LoginRequiredMixin,View):
   def get(self, request, *args, **kwargs):
+    latest_data = WaterTemperature.objects.all().last()
     datas = WaterTemperature.objects.all()
     print("GET-OK")
-    return render(request, 'wrcsystem/water_temperature_list.html', {'datas': datas})
+    return render(request, 'wrcsystem/water_temperature_list.html', {'datas': datas, 'latest_data': latest_data})
 
   def post(self, request, *args, **kwargs):
     fahrenheit = (float(request.POST["celsius"])*9/5)+32
     context = WaterTemperature(RaspberryPi_Name=request.POST["RaspberryPi_Name"],celsius=request.POST["celsius"],fahrenheit=fahrenheit)
     context.save()
     print(context) 
-    slack_post(context)
+    slack_post_water(context.RaspberryPi_Name,context.celsius,context.fahrenheit)
     datas = WaterTemperature.objects.all()
     print("POST-OK")
     return render(request, 'wrcsystem/water_temperature_list.html', {'datas': datas})

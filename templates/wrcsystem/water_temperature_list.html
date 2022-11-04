@@ -10,7 +10,8 @@
         <div class="time">
           <div class="time_title"><h2>現在時刻</h2></div>
           <div><h2><p id="RealtimeClockArea"></p></h2></div>
-        </div>
+        </div><br>
+          <h4>最新のデータ：{{ latest_data.RaspberryPi_Name }} : {{ latest_data.celsius }}°C : {{ latest_data.fahrenheit }}°F : {{ latest_data.created_date }}</h4>
         {% for data in datas %}
           <h3>------------------------------------------------------------------------</h3>
           <input type="checkbox" name="delete" form="delete" value={{data.id}}>
