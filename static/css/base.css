@@ -28,12 +28,12 @@ header{
 .header_links{
   display: flex;
   padding: 25px 0 0 0;
-  width: 50%;
 }
+
 
 a.header_link{
   color: rgb(180, 180, 180);
-  font-size: 20px;
+  font-size: 16px;
   text-decoration: none;
 }
 

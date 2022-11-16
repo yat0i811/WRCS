@@ -1,0 +1,38 @@
+{% extends 'wrcsystem/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/test_post.css' %}">
+<script type="text/javascript" src="{% static 'js/timer.js' %}"></script>
+  <div class="main">
+    <div class="canvas">
+      <div class="content">
+        <div class="time">
+          <div class="time_title"><h2>現在時刻</h2></div>
+          <div><h2><p id="RealtimeClockArea"></p></h2></div>
+        </div><br>
+          <h4>最新のデータ：{{ latest_data.RaspberryPi_Name }} : {{ latest_data.high }}% : {{ latest_data.created_date }}</h4>
+        {% for data in datas %}
+          <h3>------------------------------------------------------------------------</h3>
+          <input type="checkbox" name="delete" form="delete" value={{data.id}}>
+            {{ data.RaspberryPi_Name }} : {{ data.high }}% : {{ data.created_date }}
+          </input>
+        {% endfor %}
+        <h3>------------------------------------------------------------------------</h3>
+        <form action="/delete_water_high" method="POST" id="delete">
+          {% csrf_token %}
+          <input type="submit" value="削除" class="btn btn-outline-danger">
+        </form><br>
+        <form action="/water_high_list" method="POST" id="post">
+          {% csrf_token %}<br>
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4"><input type="textbox" name="RaspberryPi_Name" id="RaspberryPi_Name" placeholder="ラズパイ名" class= "form-control"></div>
+            <div class="col-4"><input type="number" name="high" id="high" placeholder="水位" class="form-control" step="0.01" max="1"></div>
+            <input type="submit" value="追加" class="btn btn-outline-success col-2">
+            <div>
+        </form><br>
+      </div>
+    </div>
+  </div>
+{% endblock %}

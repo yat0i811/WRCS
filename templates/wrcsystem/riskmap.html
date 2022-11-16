@@ -1,0 +1,23 @@
+{% extends 'wrcsystem/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/test_post.css' %}">
+<script type="text/javascript" src="{% static 'js/timer.js' %}"></script>
+  <div class="main">
+    <div class="canvas">
+      <div class="content">
+        <div class="time">
+          <div class="time_title"><h2>現在時刻</h2></div>
+          <div><h2><p id="RealtimeClockArea"></p></h2></div>
+        </div>
+        {% for data in datas %}
+          <h3>------------------------------------------------------------------------</h3>
+            {{ data.area }} : {{ data.risk }}<br>
+          <img src="/media/{{ data.map_images }}" style="width:400px; height:auto;" />
+        {% endfor %}
+        <h3>------------------------------------------------------------------------</h3>
+      </div>
+    </div>
+  </div>
+{% endblock %}

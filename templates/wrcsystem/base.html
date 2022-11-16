@@ -15,12 +15,13 @@
   <header>
     <div class="header_line">
       <div class="header_icon"><a href="/"><img src="{% static 'images/PD.png' %}" alt="ホームページアイコン" class="icon" width="77" height="77"></a></div>
-      <div class="header_links row">
-          <div class="col-3"><a class="header_link underline" href="{% url 'index' %}">HOME</a></div>
+      <div class="header_links">
+          <div class="col-1"><a class="header_link underline" href="{% url 'index' %}">HOME</a></div>
         {% if user.is_authenticated %}
-          <div class="col-3"><a class="header_link underline" href="{% url 'test_list' %}">テストリスト</a></div>
-          <div class="col-3"><a class="header_link underline" href="{% url 'water_temperature_list' %}">水温リスト</a></div>
-          <div class="col-3"><a class="header_link underline" href="{% url 'index' %}">null</a></div>
+          <div class="col-1"><a class="header_link underline" href="{% url 'test_list' %}">テストリスト</a></div>
+          <div class="col-1"><a class="header_link underline" href="{% url 'water_temperature_list' %}">水温リスト</a></div>
+          <div class="col-1"><a class="header_link underline" href="{% url 'water_high_list' %}">水位リスト</a></div>
+          <div class="col-1"><a class="header_link underline" href="{% url 'riskmap_list' %}">危険度マップ</a></div>
         {% endif %}
       </div>
     </div>
@@ -35,8 +36,9 @@
           {% if user.is_authenticated %}
             <li><a class="header_link" href="{% url 'test_list' %}">テストリスト</a></li>
             <li><a class="header_link" href="{% url 'water_temperature_list' %}">水温リスト</a></li>
-              <li><a class="header_link" href="{% url 'index' %}">null</a></li>
-            <li><a class="header_link" href="/admin">管理画面</a></li>
+            <li><a class="header_link" href="{% url 'water_high_list' %}">水位リスト</a></li>
+            <li><a class="header_link" href="{% url 'riskmap_list' %}">危険度マップ</a></li>
+            <li><a class="header_link" href="/admin">管理者画面</a></li>
           {% endif %}
         </ul>
       </div>

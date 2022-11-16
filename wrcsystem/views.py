@@ -3,7 +3,7 @@ from django.views.generic import TemplateView # テンプレートタグ
 from .forms import AccountForm, AddAccountForm # ユーザーアカウントフォーム
 
 from django.utils import timezone
-from .models import TestPost, WaterTemperature
+from .models import TestPost, WaterTemperature,WaterHigh,MapDanger
 from .forms import TestPostForm
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
@@ -16,7 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # slack機能
-from .slack_post import slack_post_test, slack_post_water
+from .slack_post import slack_post_test, slack_post_water_temp,slack_post_water_high
 
 class TestViews(LoginRequiredMixin,View):
   def get(self, request, *args, **kwargs):
@@ -42,14 +42,37 @@ class WaterTemperatureViews(LoginRequiredMixin,View):
 
   def post(self, request, *args, **kwargs):
     fahrenheit = (float(request.POST["celsius"])*9/5)+32
-    context = WaterTemperature(RaspberryPi_Name=request.POST["RaspberryPi_Name"],celsius=request.POST["celsius"],fahrenheit=fahrenheit)
+    context = WaterTemperature(RaspberryPi_Name=request.POST["RaspberryPi_Name"],celsius=request.POST["celsius"],fahrenheit=fahrenheit) 
     context.save()
-    print(context) 
-    slack_post_water(context.RaspberryPi_Name,context.celsius,context.fahrenheit)
+    print(context)
+    slack_post_water_temp(context.RaspberryPi_Name,context.celsius,context.fahrenheit)
+    print("Slack-OK")
+    latest_data = WaterTemperature.objects.all().last()
     datas = WaterTemperature.objects.all()
     print("POST-OK")
-    return render(request, 'wrcsystem/water_temperature_list.html', {'datas': datas})
+    return render(request, 'wrcsystem/water_temperature_list.html', {'datas': datas, 'latest_data': latest_data})
 
+class WaterHighViews(LoginRequiredMixin,View):
+  def get(self, request, *args, **kwargs):
+    latest_data = WaterHigh.objects.all().last()
+    datas = WaterHigh.objects.all()
+    print("GET-OK")
+    return render(request, 'wrcsystem/water_high_list.html', {'datas': datas, 'latest_data': latest_data})
+  def post(self, request, *args, **kwargs):
+    context = WaterHigh(RaspberryPi_Name=request.POST["RaspberryPi_Name"],high=int(float(request.POST["high"])*100))
+    context.save()
+    print(context.high) 
+    slack_post_water_high(context.RaspberryPi_Name,context.high)
+    latest_data = WaterHigh.objects.all().last()
+    datas = WaterHigh.objects.all()
+    print("POST-OK")
+    return render(request, 'wrcsystem/water_high_list.html', {'datas': datas, 'latest_data': latest_data})
+
+class RiskMapViews(LoginRequiredMixin,View):
+  def get(self, request, *args, **kwargs):
+    datas = MapDanger.objects.filter(risk=1)
+    print("GET-OK")
+    return render(request, 'wrcsystem/riskmap.html', {'datas': datas})
 
 @login_required
 def delete_test(request, *args, **kwargs):
@@ -72,7 +95,21 @@ def delete_water_temperature(request, *args, **kwargs):
         content = WaterTemperature.objects.filter(id=id).first()
         WaterTemperature.delete(content)
     datas = WaterTemperature.objects.all()
-    return render(request, 'wrcsystem/water_temperature_list.html', {'datas': datas})
+    latest_data = WaterTemperature.objects.all().last()
+    return render(request, 'wrcsystem/water_temperature_list.html', {'datas': datas, 'latest_data': latest_data})
+
+@login_required
+def delete_water_high(request, *args, **kwargs):
+    print("DELETE-OK")
+    id_list = request.POST.getlist("delete")
+    print(id_list)
+    for id in id_list:
+        content = WaterHigh.objects.filter(id=id).first()
+        WaterHigh.delete(content)
+    datas = WaterHigh.objects.all()
+    latest_data = WaterHigh.objects.all().last()
+    return render(request, 'wrcsystem/water_high_list.html', {'datas': datas, 'latest_data': latest_data})
+
 
 @csrf_exempt
 def raspost_test(request):
@@ -83,15 +120,26 @@ def raspost_test(request):
     return render(request, 'wrcsystem/ras_post.html')
 
 @csrf_exempt
-def raspost_water(request):
+def raspost_water_temp(request):
     context = WaterTemperature(RaspberryPi_Name=request.POST["RaspberryPi_Name"],celsius=request.POST["celsius"],fahrenheit=request.POST["fahrenheit"])
     context.save()
     print(context)
     print("RAS-POST-OK")
     return render(request, 'wrcsystem/ras_post.html')
 
+@csrf_exempt
+def raspost_water_high(request):
+    context = WaterHigh(RaspberryPi_Name=request.POST["RaspberryPi_Name"],high=int(float(request.POST["high"])*100))
+    context.save()
+    print(context)
+    print("RAS-POST-OK")
+    return render(request, 'wrcsystem/ras_post.html')
+
+
 test_list = TestViews.as_view()
 water_temperature_list = WaterTemperatureViews.as_view()
+water_high_list = WaterHighViews.as_view()
+riskmap_list = RiskMapViews.as_view()
 
 
 #ログイン
