@@ -129,11 +129,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-if DEBUG:
-    STATICFILES_DIRS = [STATIC_DIR,] #ローカル環境
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static') #本番環境
-
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = "/media/"
 
@@ -147,5 +142,7 @@ SESSION_COOKIE_SECURE = True
 
 try:
     from .local_settings import *
+    STATICFILES_DIRS = [STATIC_DIR,] #ローカル環境
 except:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static') #本番環境
     pass
