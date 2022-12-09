@@ -135,6 +135,14 @@ def raspost_water_high(request):
     print("RAS-POST-OK")
     return render(request, 'wrcsystem/ras_post.html')
 
+@csrf_exempt
+def raspost_risk_map(request):
+    context = MapDanger()
+    context.save()
+    print(context)
+    print("RAS-POST-OK")
+    return render(request, 'wrcsystem/ras_post.html')
+
 
 test_list = TestViews.as_view()
 water_temperature_list = WaterTemperatureViews.as_view()
