@@ -21,6 +21,7 @@
             <div class="sign_out"><a href="{% url 'Logout' %}"><button type="button" class="btn btn-outline-primary">ログアウト</button></a></div>
           {% else %}
             <div class="log">
+              <div class="buttons"><a href="{% url 'index' %}"><button type="button" class="btn btn-outline-success btn-lg">レイアウトデザインのアンケート</button></a></div><br><br>
               <div class="gest">現在未ログイン</div>
               <div class="announce">ログインまたはユーザー登録をしてください</div>
               <div class="buttons">
