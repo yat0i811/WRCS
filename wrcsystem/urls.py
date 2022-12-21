@@ -17,5 +17,7 @@ urlpatterns = [
     path('raspost_test', views.raspost_test, name="ras_post_test" ),
     path('raspost_water_temp', views.raspost_water_temp, name="ras_post_water_temp" ),
     path('raspost_water_high', views.raspost_water_high, name="ras_post_water_high" ),
-    path('raspost_risk_map', views.raspost_risk_map, name="raspost_risk_map")
+    path('raspost_risk_map', views.raspost_risk_map, name="raspost_risk_map"),
+    
+    path("survey",views.survey,name="survey"),
 ]

@@ -191,6 +191,10 @@ def index(request):
     params = {"UserID":request.user,}
     return render(request, "wrcsystem/index.html",context=params)
 
+#アンケートホーム
+def survey(request):
+    return render(request, "layout/home.html")
+
 
 #新規登録
 class  AccountRegistration(TemplateView):
