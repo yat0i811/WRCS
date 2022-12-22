@@ -12,7 +12,7 @@
           {% for data in datas %}
             <a class="col btn btn-outline-primary btn-lg url" href="{% url 'sample3_detail' id=data.RaspberryPi_ID %}">貯水槽{{ data.RaspberryPi_ID}}</a>
           {% endfor %}
-          <a class="col btn btn-outline-secondary btn-lg url" href="{% url 'home' %}">戻る</a>
+          <input class="col btn btn-outline-secondary btn-lg" type="button" value="戻る" onClick="javascript:history.go(-1);">
         </div>
       {% endblock %}
     </div>

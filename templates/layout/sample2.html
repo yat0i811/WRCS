@@ -16,7 +16,7 @@
           <a class="col btn btn-outline-primary btn-lg url" href="{% url 'sample2e' %}">地盤の高度差</a>
           <a class="col btn btn-outline-primary btn-lg url" href="{% url 'sample2f' %}">天気</a>
           <a class="col btn btn-outline-primary btn-lg url" href="{% url 'sample2g' %}">気温</a>
-          <a class="col btn btn-outline-secondary btn-lg url" href="{% url 'home' %}">戻る</a>
+          <input class="col btn btn-outline-secondary btn-lg" type="button" value="戻る" onClick="javascript:history.go(-1);">
         </div>
       {% endblock %}
     </div>
