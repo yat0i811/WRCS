@@ -206,7 +206,7 @@ def download_survey(request):
         list_data = [data.student_number,
                     data.question_first_sumple1,
                     data.question_first_sumple2,
-                    data.question_first_sumple2,
+                    data.question_first_sumple3,
                     data.question_second,
                     data.question_third_sumple1,
                     data.question_third_sumple2,
