@@ -3,15 +3,49 @@ from django.db import models
 from django.utils import timezone
 
 
-class SurveyTest(models.Model):
-    title = models.CharField(max_length=200)
-    text = models.TextField()
-    created_date = models.DateTimeField(default=timezone.now)
-    published_date = models.DateTimeField(blank=True, null=True)
+class WRCS_samples(models.Model):
+    RaspberryPi_ID = models.IntegerField(null=False)
+    RaspberryPi_point = models.CharField(max_length=16)
+    water_high = models.DecimalField(max_digits=6,decimal_places=3)
+    water_temperature = models.DecimalField(max_digits=5,decimal_places=3)
+    is_water_out = models.BooleanField(default=False,null=False)
+    is_water_in = models.BooleanField(default=False,null=False)
+    altitude = models.DecimalField(max_digits=5,decimal_places=3)
+    now_weather = models.CharField(max_length=8)
+    future_weather = models.CharField(max_length=8)
+    now_temperature = models.DecimalField(max_digits=5,decimal_places=3)
+    future_temperature = models.DecimalField(max_digits=5,decimal_places=3)
+    date = models.DateTimeField(default=timezone.now)
 
-    def publish(self):
-        self.published_date = timezone.now()
-        self.save()
-
-    def __str__(self):
-        return self.title
+class WebLayoutQuestions(models.Model):
+    student_number = models.IntegerField(verbose_name='学籍番号',null=False,unique=True)
+    question_first_sumple1 = models.BooleanField(verbose_name='サンプルページ1が見やすかった',null=True,default=False)
+    question_first_sumple2 = models.BooleanField(verbose_name='サンプルページ2が見やすかった',null=True,default=False)
+    question_first_sumple3 = models.BooleanField(verbose_name='サンプルページ3が見やすかった',null=True,default=False)
+    question_second = models.IntegerField(verbose_name='1番見やすかったサンプル',null=True,default=0)
+    question_third_sumple1 = models.BooleanField(verbose_name='サンプルページ1が貯水槽の稼働状況を見比べやすかった',null=True,default=False)
+    question_third_sumple2 = models.BooleanField(verbose_name='サンプルページ2が貯水槽の稼働状況を見比べやすかった',null=True,default=False)
+    question_third_sumple3 = models.BooleanField(verbose_name='サンプルページ3が貯水槽の稼働状況を見比べやすかった',null=True,default=False)
+    question_fourth = models.IntegerField(verbose_name='一番貯水槽の稼働状況を見比べやすかったサンプル',null=True,default=0)
+    question_fifth = models.BooleanField(verbose_name='フィルターは必要か',null=True,default=False)
+    question_sixth_date = models.BooleanField(verbose_name='フィルター取得日時',null=True,default=False)
+    question_sixth_RaspberryPi_ID = models.BooleanField(verbose_name='フィルターラズパイID',null=True,default=False)
+    question_sixth_RaspberryPi_point = models.BooleanField(verbose_name='フィルターラズパイ場所',null=True,default=False)
+    question_sixth_is_water_out = models.BooleanField(verbose_name='フィルター吸水状況',null=True,default=False)
+    question_sixth_is_water_in = models.BooleanField(verbose_name='フィルター散水状況',null=True,default=False)
+    question_sixth_water_high = models.BooleanField(verbose_name='フィルター水位',null=True,default=False)
+    question_sixth_water_temperature = models.BooleanField(verbose_name='フィルター水温',null=True,default=False)
+    question_sixth_altitude = models.BooleanField(verbose_name='フィルター高度',null=True,default=False)
+    question_sixth_now_weather = models.BooleanField(verbose_name='フィルター現在天気',null=True,default=False)
+    question_sixth_future_weather = models.BooleanField(verbose_name='フィルター今後天気',null=True,default=False)
+    question_sixth_now_temperature = models.BooleanField(verbose_name='フィルター現在気温',null=True,default=False)
+    question_sixth_future_temperature = models.BooleanField(verbose_name='フィルター今後気温',null=True,default=False)
+    question_seventh = models.BooleanField(verbose_name='ソートは必要か',null=True,default=False)
+    question_eighth_date = models.BooleanField(verbose_name='ソート取得日時',null=True,default=False)
+    question_eighth_RaspberryPi_ID = models.BooleanField(verbose_name='ソートラズパイID',null=True,default=False)
+    question_eighth_water_high = models.BooleanField(verbose_name='ソート水位',null=True,default=False)
+    question_eighth_water_temperature = models.BooleanField(verbose_name='ソート水温',null=True,default=False)
+    question_eighth_altitude = models.BooleanField(verbose_name='ソート高度',null=True,default=False)
+    question_eighth_now_temperature = models.BooleanField(verbose_name='ソート現在気温',null=True,default=False)
+    question_eighth_future_temperature = models.BooleanField(verbose_name='ソート今後気温',null=True,default=False)
+    question_ninth = models.TextField(verbose_name='意見',max_length=256,null=True)

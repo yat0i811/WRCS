@@ -18,16 +18,16 @@
               <div class="log_message">現在のログインユーザー名</div>
               <div class="username">{{ user.get_username }}</div>
             </div>
-            <div class="sign_out"><a href="{% url 'Logout' %}"><button type="button" class="btn btn-outline-primary">ログアウト</button></a></div>
+            <div class="sign_out"><a href="{% url 'Logout' %}"><button type="button" class="btn btn-outline-primary">ログアウト</button></a></div><br>
           {% else %}
             <div class="log">
               <div class="buttons"><a href="{% url 'survey' %}"><button type="button" class="btn btn-outline-success btn-lg">レイアウトデザインのアンケート</button></a></div><br><br>
-              <div class="gest">現在未ログイン</div>
+              <!--<div class="gest">現在未ログイン</div>
               <div class="announce">ログインまたはユーザー登録をしてください</div>
               <div class="buttons">
                 <div class="sign_up"><a href="{% url 'register' %}"><button type="button" class="btn btn-outline-primary">新規登録</button></a></div>
                 <div class="sign_in"><a href="{% url 'Login' %}"><button type="button" class="btn btn-outline-primary">ログイン</button></a></div>
-              </div>
+              </div>-->
             </div>
           {% endif %}
         </div>

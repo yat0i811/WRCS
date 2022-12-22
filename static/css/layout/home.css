@@ -1,0 +1,36 @@
+.explanation{
+  margin: 3%;
+  padding: 1%;
+  border: 5px double gray;
+}
+
+.question{
+  padding-left: 3%;
+}
+
+a {
+  text-decoration: none;
+}
+
+.URLgroup{
+  margin: 1%;
+}
+
+.url{
+  margin: 10px 2% 10px 2%;
+}
+
+.points{
+  margin-top: 5px;
+}
+
+.textlines {
+  border: 2px solid #0a0;  /* 枠線 */
+  border-radius: 0.67em;   /* 角丸 */
+  padding: 0.5em;          /* 内側の余白量 */
+  background-color: snow;  /* 背景色 */
+  width: 30em;             /* 横幅 */
+  height: 120px;           /* 高さ */
+  font-size: 1em;          /* 文字サイズ */
+  line-height: 1.2;        /* 行の高さ */
+}

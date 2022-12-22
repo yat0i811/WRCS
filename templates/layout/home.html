@@ -3,11 +3,124 @@
 
 {% block content %}
   <link rel="stylesheet" href="{% static 'css/index.css' %}">
+  <link rel="stylesheet" href="{% static 'css/layout/home.css' %}">
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script>
+      $(function() {
+          //チェックしたら発火
+          $('.check').change(function() {
+              //選択したinputのname値を変数に格納
+              var name = $(this).attr('name');
+              //control用のIDを連結
+              var control_name = name + '_control';
+              var control_checkbox = document.getElementById( control_name );
+              //チェックされているチェックボックスの数が0より多い場合
+              if ($("input[name='" + name + "']:checked").length > 0) {
+                  //チェック有効
+                  control_checkbox.checked = true;
+              } else {
+                  //チェック有効
+                  control_checkbox.checked = false;
+              }
+          });
+      });
+  </script>
   <div class="main">
     <div class="canvas">
       <div class="content">
-        <div class="wellcome">Water Resource Control System</div>
+        <div class="wellcome">Water Resource Control System</div> 
       </div>
+      <div class="survey_content">
+        <div class="explanation">「プロジェクトデザイン実践」のC-4班では、「地下水の大量消費による地盤沈下を防ぐには」というテーマに取り組んでいます。私たちは地盤沈下を起こさずに地下水を用いた消融雪システムの開発に取り組んでいます。皆さんが地盤沈下を防ぐシステムを使用する側の立場である場合に必要であると思う情報を調査したいため、ご協力をお願いします。調査結果は上記の目的のみに使用いたします。結果は統計的に処理し、個人が特定されることはありません。本調査で得られた個人情報は適切に管理致します。</div>
+        <div class="question"><b>以下の質問には地盤沈下を防ぐシステムを使用する市役所側の立場としてお答えください。</b></div><br>
+        <div class="question">1⃣以下のURLからWebアプリのサンプルページに飛んでください。</div>
+        <div class="question">（※Webアプリのサンプルページは1920×1080の大きさの画面で最大化して使用することを想定しているので、パソコンから閲覧してください。）</div>
+        <div class="URLgroup row">
+          <a class="col btn btn-outline-primary btn-lg url" href="{% url 'sample1' %}">サンプルページ1</a>
+          <a class="col btn btn-outline-primary btn-lg url" href="{% url 'sample2' %}">サンプルページ2</a>
+          <a class="col btn btn-outline-primary btn-lg url" href="{% url 'sample3' %}">サンプルページ3</a>
+        </div>
+        <div class="question">2⃣全てのサンプルページを閲覧したら、以下のアンケートにお答えください。</div>
+        <form action="{% url 'post_survey' %}" method="POST" id="post">
+          {% csrf_token %}
+          <div class="question">
+            <input type="checkbox" id="survey1_control" required style="display:none">
+            <label>どのページが見やすかったか（複数選択可）</label>
+            <div class="row">
+              <div class="col-3"><input class="check" type="checkbox" name="survey1" value="1">サンプルページ1</div>
+              <div class="col-3"><input class="check" type="checkbox" name="survey1" value="2">サンプルページ2</div>
+              <div class="col-3"><input class="check" type="checkbox" name="survey1" value="3">サンプルページ3</div>
+              
+            <div><br>
+            <label>選択したものの中でどのページが一番見やすかったか</label>
+            <div class="row">
+              <div class="col-2"><input type="radio" name="survey2" value="1" require>サンプルページ1</div>
+              <div class="col-2"><input type="radio" name="survey2" value="2">サンプルページ2</div>
+              <div class="col-2"><input type="radio" name="survey2" value="3">サンプルページ3</div>
+            <div><br>
+            <input type="checkbox" id="survey3_control" required style="display:none">
+            <label>どのページが貯水槽の稼働状況を見比べやすかったか（複数選択可）</label>
+            <div class="row">
+              <div class="col-2"><input class="check" type="checkbox" name="survey3" value="1">サンプルページ1</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey3" value="2">サンプルページ2</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey3" value="3">サンプルページ3</div>
+            <div><br>
+            <label>選択したものの中でどのページが一番貯水槽の稼働状況を見比べやすかったか</label>
+            <div class="row">
+              <div class="col-2"><input type="radio" name="survey4" value="1" require>サンプルページ1</div>
+              <div class="col-2"><input type="radio" name="survey4" value="2">サンプルページ2</div>
+              <div class="col-2"><input type="radio" name="survey4" value="3">サンプルページ3</div>
+            <div><br>
+            <label>データにフィルター（値による絞り込み）をかけたほうがいいか</label>
+            <div class="row">
+              <div class="col-2"><input type="radio" name="survey5" value="Yes" require>はい</div>
+              <div class="col-2"><input type="radio" name="survey5" value="No">いいえ</div>
+            <div><br>
+            <input type="checkbox" id="survey6_control" required style="display:none">
+            <label>フィルターをかける場合どのデータにかけるべきか（複数選択可）</label>
+            <div class="row">
+              <div class="col-2"><input class="check" type="checkbox" name="survey6" value="1">データ取得日時</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey6" value="2">貯水槽番号</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey6" value="3">貯水槽の場所</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey6" value="4">現在の散水状況</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey6" value="5">現在の吸水状況</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey6" value="6">水位</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey6" value="7">水温</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey6" value="8">地盤の高度差</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey6" value="9">現在の天気</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey6" value="10">今後の天気</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey6" value="11">現在の気温</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey6" value="12">今後の気温</div>
+              <div class="col-3"><input class="check" type="checkbox" name="survey6" value="0">フィルターはかけなくてよい</div>
+            <div><br>
+            <label>データにソート（値による並べ替え）をかけたほうがいいか</label>
+            <div class="row">
+              <div class="col-2"><input type="radio" name="survey7" value="Yes" require>はい</div>
+              <div class="col-2"><input type="radio" name="survey7" value="No">いいえ</div>
+            <div><br>
+            <input type="checkbox" id="survey8_control" required style="display:none">
+            <label>ソートをかける場合どのデータにかけるべきか（複数選択可）</label>
+            <div class="row">
+              <div class="col-2"><input class="check" type="checkbox" name="survey8" value="1">データ取得日時</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey8" value="2">貯水槽番号</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey8" value="3">水位</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey8" value="4">水温</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey8" value="5">地盤の高度差</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey8" value="6">現在の気温</div>
+              <div class="col-2"><input class="check" type="checkbox" name="survey8" value="7">今後の気温</div>
+              <div class="col-3"><input class="check" type="checkbox" name="survey8" value="0">ソートはかけなくてよい</div>
+            <div><br>
+            <label for="points">なにか気になる点、改善するべき点があれば記入してください</label>
+            <div class="points">
+              <textarea class="textlines" id="points" name="survey9" maxlength="256" placeholder="ここにご記入ください"></textarea>
+            </div><br>
+            <div class="row">
+              <div class="col-3"><input type="number" name="student_number" placeholder="学籍番号" minlength="7" maxlength="7" class="form-control" required></div>
+              <input type="submit" value="送信" class="btn btn-outline-success col-2">
+            </div>
+          </div>
+        </form>
+      </div><br>
     </div>
   </div>
 {% endblock %}

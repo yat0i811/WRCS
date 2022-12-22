@@ -39,6 +39,9 @@
             <li><a class="header_link" href="{% url 'water_high_list' %}">水位リスト</a></li>
             <li><a class="header_link" href="{% url 'riskmap_list' %}">危険度マップ</a></li>
             <li><a class="header_link" href="/admin">管理者画面</a></li>
+            <li><a class="header_link" href="{% url 'survey' %}">レイアウトアンケート</a></li>
+          {% else %}
+          <li><a class="header_link" href="/admin">ログイン</a></li>
           {% endif %}
         </ul>
       </div>

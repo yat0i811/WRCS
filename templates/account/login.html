@@ -21,9 +21,11 @@
       </table>
       <input type="submit" class="btn" value="Login">
     </form>
+      <p class="message">アカウントをお持ちですか？：
+      <a href="{% url 'register' %}">アカウントを作成</a>
+      </p>
+      <a href="{% url 'index' %}">ホームへ戻る</a>
+      <br>
   </div>
-    <p class="message">アカウントをお持ちですか？：
-    <a href="{% url 'register' %}">アカウントを作成</a>
-    </p>
 </body>
 </html>

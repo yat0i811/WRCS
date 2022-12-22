@@ -1,1 +1,1 @@
-print(0)
+print("source WRCSenv/bin/activate")

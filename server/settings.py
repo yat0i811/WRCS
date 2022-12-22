@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'wrcsystem.apps.WrcsystemConfig'
+    'wrcsystem.apps.WrcsystemConfig',
+    'survey.apps.SurveyConfig',
 ]
 
 MIDDLEWARE = [

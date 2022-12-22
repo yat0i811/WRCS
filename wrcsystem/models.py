@@ -45,7 +45,7 @@ class Account(models.Model):
     # 追加フィールド
     last_name = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
-    account_image = models.ImageField(upload_to="profile_pics",blank=True)
+    #account_image = models.ImageField(upload_to="profile_pics",blank=True)
 
     def __str__(self):
         return self.user.username

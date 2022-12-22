@@ -1,0 +1,24 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block content %}
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+  <link rel="stylesheet" href="{% static 'css/layout/sample.css' %}">
+  <div class="main">
+    <div class="title"><h1 style="text-align:center">サンプルページ2</h1></div>
+    <div class="canvas">
+      {% block sample2content %}
+        <div class="row row-cols-5">
+          <a class="col btn btn-outline-primary btn-lg url" href="{% url 'sample2a' %}">散水状況</a>
+          <a class="col btn btn-outline-primary btn-lg url" href="{% url 'sample2b' %}">吸水状況</a>
+          <a class="col btn btn-outline-primary btn-lg url" href="{% url 'sample2c' %}">水位</a>
+          <a class="col btn btn-outline-primary btn-lg url" href="{% url 'sample2d' %}">水温</a>
+          <a class="col btn btn-outline-primary btn-lg url" href="{% url 'sample2e' %}">地盤の高度差</a>
+          <a class="col btn btn-outline-primary btn-lg url" href="{% url 'sample2f' %}">天気</a>
+          <a class="col btn btn-outline-primary btn-lg url" href="{% url 'sample2g' %}">気温</a>
+          <a class="col btn btn-outline-secondary btn-lg url" href="{% url 'home' %}">戻る</a>
+        </div>
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}

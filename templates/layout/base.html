@@ -27,6 +27,11 @@
       <div class="hamburger-demo-menuwrap">
         <ul class="hamburger-demo-menulist">
             <li><a class="header_link" href="{% url 'index' %}">HOME</a></li>
+            {% if user.is_authenticated %}
+            <li><a class="header_link" href="{% url 'download_survey' %}">アンケート結果ダウンロード</a></li>
+            {% else %}
+            <li><a class="header_link" href="/admin">ログイン</a></li>
+            {% endif %}
         </ul>
       </div>
       <div class="hamburger-demo-cover"></div>
@@ -37,7 +42,6 @@
       <div class="space"></div>
       {% block content %}
       {% endblock %}
-      <div class="space"></div>
   </main>
 
   <footer>

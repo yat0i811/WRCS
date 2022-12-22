@@ -1,0 +1,30 @@
+{% extends 'layout/sample2.html' %}
+{% load static %}
+
+{% block sample2content %}
+<div>
+  <table class="table table-hover ">
+      <thead>
+          <tr>
+              <th>データ取得日時</th>
+              <th>貯水槽番号</th>
+              <th>貯水槽の場所</th>
+              <th>水位</th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for data in datas %}
+          <tr>
+              <td>{{ data.date }}</td>
+              <td>{{ data.RaspberryPi_ID}}</td>
+              <td>{{ data.RaspberryPi_point}}</td>
+              <td>{{ data.water_high}}%</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+</div>
+<div class="buttons">
+  <a class="btn btn-outline-secondary btn-lg" href="{% url 'sample2' %}">戻る</a>
+</div>
+{% endblock %}
