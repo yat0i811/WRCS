@@ -57,6 +57,7 @@ def sample3_detail(request,id):
 
 def post_survey(request):
     student_number = request.POST.get('student_number')
+    datas = WebLayoutQuestions.objects.filter(student_number=student_number)
     survey1 = request.POST.getlist("survey1")
     survey2 = request.POST.get("survey2")
     survey3 = request.POST.getlist("survey3")
@@ -67,7 +68,7 @@ def post_survey(request):
     survey8 = request.POST.getlist("survey8")
     survey9 = request.POST.get("survey9")
     survey = [False]*27
-    surveies = [survey1, survey2, survey3, survey4, survey5, survey6,survey7,survey8,survey9]
+    #surveies = [survey1, survey2, survey3, survey4, survey5, survey6,survey7,survey8,survey9]
     if '1' in survey1:
         survey[0] = True
     if '2' in survey1:
@@ -106,6 +107,8 @@ def post_survey(request):
             survey[18] = True
         if '12' in survey6:
             survey[19] = True
+    else:
+        survey[6] = False
     if 'Yes' == survey7[0]:
         survey[7] = True
         if '1' in survey8:
@@ -122,39 +125,74 @@ def post_survey(request):
             survey[25] = True
         if '7' in survey8:
             survey[26] = True
-    context = WebLayoutQuestions(student_number=int(student_number),
-                                question_first_sumple1=survey[0],
-                                question_first_sumple2=survey[1],
-                                question_first_sumple3=survey[2],
-                                question_second=int(survey2),
-                                question_third_sumple1=survey[3],
-                                question_third_sumple2=survey[4],
-                                question_third_sumple3=survey[5],
-                                question_fourth=survey4,
-                                question_fifth=survey[6],
-                                question_sixth_date=survey[8],
-                                question_sixth_RaspberryPi_ID=survey[9],
-                                question_sixth_RaspberryPi_point=survey[10],
-                                question_sixth_is_water_out=survey[11],
-                                question_sixth_is_water_in=survey[12],
-                                question_sixth_water_high=survey[13],
-                                question_sixth_water_temperature=survey[14],
-                                question_sixth_altitude=survey[15],
-                                question_sixth_now_weather=survey[16],
-                                question_sixth_future_weather=survey[17],
-                                question_sixth_now_temperature=survey[18],
-                                question_sixth_future_temperature=survey[19],
-                                question_seventh=survey[7],
-                                question_eighth_date=survey[20],
-                                question_eighth_RaspberryPi_ID=survey[21],
-                                question_eighth_water_high=survey[22],
-                                question_eighth_water_temperature=survey[23],
-                                question_eighth_altitude=survey[24],
-                                question_eighth_now_temperature=survey[25],
-                                question_eighth_future_temperature=survey[26],
-                                question_ninth=survey9,
-                                )
-    context.save()
+    else:
+        survey[7] = False
+    if len(datas) == 0:
+        context = WebLayoutQuestions(student_number=int(student_number),
+                                    question_first_sumple1=survey[0],
+                                    question_first_sumple2=survey[1],
+                                    question_first_sumple3=survey[2],
+                                    question_second=int(survey2),
+                                    question_third_sumple1=survey[3],
+                                    question_third_sumple2=survey[4],
+                                    question_third_sumple3=survey[5],
+                                    question_fourth=survey4,
+                                    question_fifth=survey[6],
+                                    question_sixth_date=survey[8],
+                                    question_sixth_RaspberryPi_ID=survey[9],
+                                    question_sixth_RaspberryPi_point=survey[10],
+                                    question_sixth_is_water_out=survey[11],
+                                    question_sixth_is_water_in=survey[12],
+                                    question_sixth_water_high=survey[13],
+                                    question_sixth_water_temperature=survey[14],
+                                    question_sixth_altitude=survey[15],
+                                    question_sixth_now_weather=survey[16],
+                                    question_sixth_future_weather=survey[17],
+                                    question_sixth_now_temperature=survey[18],
+                                    question_sixth_future_temperature=survey[19],
+                                    question_seventh=survey[7],
+                                    question_eighth_date=survey[20],
+                                    question_eighth_RaspberryPi_ID=survey[21],
+                                    question_eighth_water_high=survey[22],
+                                    question_eighth_water_temperature=survey[23],
+                                    question_eighth_altitude=survey[24],
+                                    question_eighth_now_temperature=survey[25],
+                                    question_eighth_future_temperature=survey[26],
+                                    question_ninth=survey9,
+                                    )
+        context.save()
+    else:
+        WebLayoutQuestions.objects.update_or_create(student_number=student_number,
+        defaults = {'question_first_sumple1':survey[0],
+        'question_first_sumple2':survey[1],
+        'question_first_sumple3':survey[2],
+        'question_second':int(survey2),
+        'question_third_sumple1':survey[3],
+        'question_third_sumple2':survey[4],
+        'question_third_sumple3':survey[5],
+        'question_fourth':survey4,
+        'question_fifth':survey[6],
+        'question_sixth_date':survey[8],
+        'question_sixth_RaspberryPi_ID':survey[9],
+        'question_sixth_RaspberryPi_point':survey[10],
+        'question_sixth_is_water_out':survey[11],
+        'question_sixth_is_water_in':survey[12],
+        'question_sixth_water_high':survey[13],
+        'question_sixth_water_temperature':survey[14],
+        'question_sixth_altitude':survey[15],
+        'question_sixth_now_weather':survey[16],
+        'question_sixth_future_weather':survey[17],
+        'question_sixth_now_temperature':survey[18],
+        'question_sixth_future_temperature':survey[19],
+        'question_seventh':survey[7],
+        'question_eighth_date':survey[20],
+        'question_eighth_RaspberryPi_ID':survey[21],
+        'question_eighth_water_high':survey[22],
+        'question_eighth_water_temperature':survey[23],
+        'question_eighth_altitude':survey[24],
+        'question_eighth_now_temperature':survey[25],
+        'question_eighth_future_temperature':survey[26],
+        'question_ninth':survey9})
     return render(request, 'layout/thanks.html', {})
 
 def thanks(request):
