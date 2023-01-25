@@ -16,9 +16,7 @@
     <div class="header_line">
       <div class="header_icon"><a href="/"><img src="{% static 'images/PD.png' %}" alt="ホームページアイコン" class="icon" width="77" height="77"></a></div>
       <div class="header_links">
-          <div class="col-1"><a class="header_link underline" href="{% url 'index' %}">HOME</a></div>
-        {% if user.is_authenticated %}
-        {% endif %}
+        <div class="col-1"><a class="header_link underline" href="{% url 'index' %}">HOME</a></div>
       </div>
     </div>
     <div class="hamburger-demo-menubox">
@@ -29,17 +27,6 @@
       <div class="hamburger-demo-menuwrap">
         <ul class="hamburger-demo-menulist">
             <li><a class="header_link" href="{% url 'index' %}">HOME</a></li>
-          {% if user.is_authenticated %}
-            <li><a class="header_link" href="{% url 'test_list' %}">テストリスト</a></li>
-            <li><a class="header_link" href="{% url 'water_temperature_list' %}">水温リスト</a></li>
-            <li><a class="header_link" href="{% url 'water_high_list' %}">水位リスト</a></li>
-            <li><a class="header_link" href="{% url 'riskmap_list' %}">危険度マップ</a></li>
-            <li><a class="header_link" href="/admin">管理者画面</a></li>
-            <li><a class="header_link" href="{% url 'survey' %}">レイアウトアンケート</a></li>
-            <li><a class="header_link" href="{% url 'Logout' %}">ログアウト</a></li>
-          {% else %}
-            <li><a class="header_link" href="{% url 'Login' %}">ログイン</a></li>
-          {% endif %}
         </ul>
       </div>
       <div class="hamburger-demo-cover"></div>

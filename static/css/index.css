@@ -58,6 +58,19 @@
   justify-content: center;
 }
 
+.row{
+  margin: 1% 1% 0 1%;
+  padding-top: 10px;
+}
+
+.col-space{
+  flex: 0 0 auto;
+  width: 6%;
+}
+
+.btn{
+  margin: 20px;
+}
 .sign_up{
   padding-right: 25px;
 }

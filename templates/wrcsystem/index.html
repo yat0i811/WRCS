@@ -9,28 +9,44 @@
       <div class="content">
         <div class="wellcome">Water Resource Control System</div>
         <div class="time">
-          <div class="time_title"><h2>現在時刻</h2></div>
-          <div><h2><p id="RealtimeClockArea"></p></h2></div>
+          <h2 id="RealtimeClockArea"></h2>
         </div>
         <div class="log_content">
           {% if user.is_authenticated %}
             <div class="log">
-              <div class="log_message">現在のログインユーザー名</div>
-              <div class="username">{{ user.get_username }}</div>
+              <div class="log_message username">現在のログインユーザー名：{{ user.get_username }}</div>
             </div>
-            <div class="sign_out"><a href="{% url 'Logout' %}"><button type="button" class="btn btn-outline-primary">ログアウト</button></a></div><br>
+            <div class="buttons row row-cols">
+              <div class="col"></div>
+              <a class="col btn btn-outline-primary btn-lg url" href="{% url 'data_all' %}">全データの一覧表示</a>
+              <div class="col"></div>
+            </div>
+            <div class="button_label">機能別一覧表示</div>
+            <div class="row row-cols-4">
+              <div class="col-space"></div>
+              <a class="col-5 btn btn-outline-primary btn-lg url" href="{% url 'data_water_level' %}">水位データ</a>
+              <a class="col-2 btn btn-outline-primary btn-lg url" href="{% url 'data_out' %}">散水状況</a>
+              <a class="col-2 btn btn-outline-primary btn-lg url" href="{% url 'data_in' %}">吸水状況</a>
+              <div class="col-space"></div>
+              <div class="col-space"></div>
+              <input class="col-5 btn btn-outline-secondary btn-lg" type="button" value="戻る" onClick="javascript:history.go(-1);">
+              <a class="col-2 btn btn-outline-primary btn-lg url" href="{% url 'data_water_temp' %}">水温データ</a>
+              <a class="col-2 btn btn-outline-primary btn-lg url" href="{% url 'data_ground' %}">地盤データ</a>
+              <div class="col-space"></div>
+            </div>
+          </div>
+            {% block listcontent %}
+            {% endblock %}
           {% else %}
             <div class="log">
-              <div class="buttons"><a href="{% url 'survey' %}"><button type="button" class="btn btn-outline-success btn-lg">レイアウトデザインのアンケート</button></a></div><br><br>
-              <!--<div class="gest">現在未ログイン</div>
+              <div class="gest">現在未ログイン</div>
               <div class="announce">ログインまたはユーザー登録をしてください</div>
               <div class="buttons">
                 <div class="sign_up"><a href="{% url 'register' %}"><button type="button" class="btn btn-outline-primary">新規登録</button></a></div>
                 <div class="sign_in"><a href="{% url 'Login' %}"><button type="button" class="btn btn-outline-primary">ログイン</button></a></div>
-              </div>-->
+              </div><br>
             </div>
           {% endif %}
-        </div>
       </div>
     </div>
   </div>

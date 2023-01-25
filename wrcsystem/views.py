@@ -3,8 +3,7 @@ from django.views.generic import TemplateView # テンプレートタグ
 from .forms import AccountForm, AddAccountForm # ユーザーアカウントフォーム
 
 from django.utils import timezone
-from .models import TestPost, WaterTemperature,WaterHigh,MapDanger
-from .forms import TestPostForm
+from .models import TestPost, OldWaterTemperature,OldWaterHigh,MapDanger,WRCSAll
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
@@ -35,36 +34,36 @@ class TestViews(LoginRequiredMixin,View):
 
 class WaterTemperatureViews(LoginRequiredMixin,View):
   def get(self, request, *args, **kwargs):
-    latest_data = WaterTemperature.objects.all().last()
-    datas = WaterTemperature.objects.all()
+    latest_data = OldWaterTemperature.objects.all().last()
+    datas = OldWaterTemperature.objects.all()
     print("GET-OK")
     return render(request, 'wrcsystem/water_temperature_list.html', {'datas': datas, 'latest_data': latest_data})
 
   def post(self, request, *args, **kwargs):
     fahrenheit = (float(request.POST["celsius"])*9/5)+32
-    context = WaterTemperature(RaspberryPi_Name=request.POST["RaspberryPi_Name"],celsius=request.POST["celsius"],fahrenheit=fahrenheit) 
+    context = OldWaterTemperature(RaspberryPi_Name=request.POST["RaspberryPi_Name"],celsius=request.POST["celsius"],fahrenheit=fahrenheit) 
     context.save()
     print(context)
     slack_post_water_temp(context.RaspberryPi_Name,context.celsius,context.fahrenheit)
     print("Slack-OK")
-    latest_data = WaterTemperature.objects.all().last()
-    datas = WaterTemperature.objects.all()
+    latest_data = OldWaterTemperature.objects.all().last()
+    datas = OldWaterTemperature.objects.all()
     print("POST-OK")
     return render(request, 'wrcsystem/water_temperature_list.html', {'datas': datas, 'latest_data': latest_data})
 
 class WaterHighViews(LoginRequiredMixin,View):
   def get(self, request, *args, **kwargs):
-    latest_data = WaterHigh.objects.all().last()
-    datas = WaterHigh.objects.all()
+    latest_data = OldWaterHigh.objects.all().last()
+    datas = OldWaterHigh.objects.all()
     print("GET-OK")
     return render(request, 'wrcsystem/water_high_list.html', {'datas': datas, 'latest_data': latest_data})
   def post(self, request, *args, **kwargs):
-    context = WaterHigh(RaspberryPi_Name=request.POST["RaspberryPi_Name"],high=int(float(request.POST["high"])*100))
+    context = OldWaterHigh(RaspberryPi_Name=request.POST["RaspberryPi_Name"],high=int(float(request.POST["high"])*100))
     context.save()
     print(context.high) 
     slack_post_water_high(context.RaspberryPi_Name,context.high)
-    latest_data = WaterHigh.objects.all().last()
-    datas = WaterHigh.objects.all()
+    latest_data = OldWaterHigh.objects.all().last()
+    datas = OldWaterHigh.objects.all()
     print("POST-OK")
     return render(request, 'wrcsystem/water_high_list.html', {'datas': datas, 'latest_data': latest_data})
 
@@ -92,10 +91,10 @@ def delete_water_temperature(request, *args, **kwargs):
     id_list = request.POST.getlist("delete")
     print(id_list)
     for id in id_list:
-        content = WaterTemperature.objects.filter(id=id).first()
-        WaterTemperature.delete(content)
-    datas = WaterTemperature.objects.all()
-    latest_data = WaterTemperature.objects.all().last()
+        content = OldWaterTemperature.objects.filter(id=id).first()
+        OldWaterTemperature.delete(content)
+    datas = OldWaterTemperature.objects.all()
+    latest_data = OldWaterTemperature.objects.all().last()
     return render(request, 'wrcsystem/water_temperature_list.html', {'datas': datas, 'latest_data': latest_data})
 
 @login_required
@@ -104,10 +103,10 @@ def delete_water_high(request, *args, **kwargs):
     id_list = request.POST.getlist("delete")
     print(id_list)
     for id in id_list:
-        content = WaterHigh.objects.filter(id=id).first()
-        WaterHigh.delete(content)
-    datas = WaterHigh.objects.all()
-    latest_data = WaterHigh.objects.all().last()
+        content = OldWaterHigh.objects.filter(id=id).first()
+        OldWaterHigh.delete(content)
+    datas = OldWaterHigh.objects.all()
+    latest_data = OldWaterHigh.objects.all().last()
     return render(request, 'wrcsystem/water_high_list.html', {'datas': datas, 'latest_data': latest_data})
 
 
@@ -121,7 +120,7 @@ def raspost_test(request):
 
 @csrf_exempt
 def raspost_water_temp(request):
-    context = WaterTemperature(RaspberryPi_Name=request.POST["RaspberryPi_Name"],celsius=request.POST["celsius"],fahrenheit=request.POST["fahrenheit"])
+    context = OldWaterTemperature(RaspberryPi_Name=request.POST["RaspberryPi_Name"],celsius=request.POST["celsius"],fahrenheit=request.POST["fahrenheit"])
     context.save()
     print(context)
     print("RAS-POST-OK")
@@ -129,7 +128,7 @@ def raspost_water_temp(request):
 
 @csrf_exempt
 def raspost_water_high(request):
-    context = WaterHigh(RaspberryPi_Name=request.POST["RaspberryPi_Name"],high=int(float(request.POST["high"])*100))
+    context = OldWaterHigh(RaspberryPi_Name=request.POST["RaspberryPi_Name"],high=int(float(request.POST["high"])*100))
     context.save()
     print(context)
     print("RAS-POST-OK")
@@ -177,19 +176,224 @@ def Login(request):
     else:
         return render(request, 'account/login.html')
 
-
 #ログアウト
 @login_required
 def Logout(request):
     logout(request)
     # ログイン画面遷移
-    return HttpResponseRedirect(reverse('Login'))
-
+    return HttpResponseRedirect(reverse('index'))
 
 #ホーム
 def index(request):
     params = {"UserID":request.user,}
     return render(request, "wrcsystem/index.html",context=params)
+
+#全データ一覧
+def data_all(request):
+    if "date_asc" in request.GET:
+        datas = WRCSAll.objects.order_by('date').all()
+    elif "date_desc" in request.GET:
+        datas = WRCSAll.objects.order_by('-date').all()
+    elif "water_level_asc" in request.GET:
+        datas = WRCSAll.objects.order_by('water_level').all()
+    elif "water_level_desc" in request.GET:
+        datas = WRCSAll.objects.order_by('-water_level').all()
+    elif "water_temp_asc" in request.GET:
+        datas = WRCSAll.objects.order_by('water_temperature').all()
+    elif "water_temp_desc" in request.GET:
+        datas = WRCSAll.objects.order_by('-water_temperature').all()
+    elif "ground_level_asc" in request.GET:
+        datas = WRCSAll.objects.order_by('ground_altitude').all()
+    elif "ground_level_desc" in request.GET:
+        datas = WRCSAll.objects.order_by('-ground_altitude').all()
+    elif "out_on" in request.GET:
+        datas = WRCSAll.objects.all().filter(OutWater_flg=True)
+    elif "out_off" in request.GET:
+        datas = WRCSAll.objects.all().filter(OutWater_flg=False)
+    elif "in_on" in request.GET:
+        datas = WRCSAll.objects.all().filter(InWater_flg=True)
+    elif "in_off" in request.GET:
+        datas = WRCSAll.objects.all().filter(InWater_flg=False)
+    elif request.POST:
+        ras = request.POST["ras"]
+        ras_num = -1; ras_pos = "all"
+        try:
+            ras_num = int(ras)
+        except ValueError:
+            ras_pos = ras
+        if ras_num != -1 and ras_pos != "all":
+            datas = WRCSAll.objects.all().filter(ras_id=ras_num, ras_point=ras_pos)
+        elif ras_num != -1:
+            datas = WRCSAll.objects.all().filter(ras_id=ras_num)
+        elif ras_pos != "all":
+            datas = WRCSAll.objects.all().filter(ras_point=ras_pos)
+        else:
+            datas = WRCSAll.objects.all()
+    else:
+        datas = WRCSAll.objects.all()
+    return render(request, 'wrcsystem/data_all.html', {'datas': datas})
+
+#水位データの一覧
+def data_water_level(request):
+    if "date_asc" in request.GET:
+        datas = WRCSAll.objects.order_by('date').all()
+    elif "date_desc" in request.GET:
+        datas = WRCSAll.objects.order_by('-date').all()
+    elif "water_level_asc" in request.GET:
+        datas = WRCSAll.objects.order_by('water_level').all()
+    elif "water_level_desc" in request.GET:
+        datas = WRCSAll.objects.order_by('-water_level').all()
+    elif request.POST:
+        ras = request.POST["ras"]
+        ras_num = -1; ras_pos = "all"
+        try:
+            ras_num = int(ras)
+        except ValueError:
+            ras_pos = ras
+        if ras_num != -1 and ras_pos != "all":
+            datas = WRCSAll.objects.all().filter(ras_id=ras_num, ras_point=ras_pos)
+        elif ras_num != -1:
+            datas = WRCSAll.objects.all().filter(ras_id=ras_num)
+        elif ras_pos != "all":
+            datas = WRCSAll.objects.all().filter(ras_point=ras_pos)
+        else:
+            datas = WRCSAll.objects.all()
+    else:
+        datas = WRCSAll.objects.all()
+    return render(request, 'wrcsystem/data_water_level.html', {'datas': datas})
+
+#散水状況の一覧
+def data_out(request):
+    if "date_asc" in request.GET:
+        datas = WRCSAll.objects.order_by('date').all()
+    elif "date_desc" in request.GET:
+        datas = WRCSAll.objects.order_by('-date').all()
+    elif "out_on" in request.GET:
+        datas = WRCSAll.objects.all().filter(OutWater_flg=True)
+    elif "out_off" in request.GET:
+        datas = WRCSAll.objects.all().filter(OutWater_flg=False)
+    elif request.POST:
+        ras = request.POST["ras"]
+        ras_num = -1; ras_pos = "all"
+        try:
+            ras_num = int(ras)
+        except ValueError:
+            ras_pos = ras
+        if ras_num != -1 and ras_pos != "all":
+            datas = WRCSAll.objects.all().filter(ras_id=ras_num, ras_point=ras_pos)
+        elif ras_num != -1:
+            datas = WRCSAll.objects.all().filter(ras_id=ras_num)
+        elif ras_pos != "all":
+            datas = WRCSAll.objects.all().filter(ras_point=ras_pos)
+        else:
+            datas = WRCSAll.objects.all()
+    else:
+        datas = WRCSAll.objects.all()
+    return render(request, 'wrcsystem/data_out.html', {'datas': datas})
+
+#吸水状況の一覧
+def data_in(request):
+    if "date_asc" in request.GET:
+        datas = WRCSAll.objects.order_by('date').all()
+    elif "date_desc" in request.GET:
+        datas = WRCSAll.objects.order_by('-date').all()
+    elif "in_on" in request.GET:
+        datas = WRCSAll.objects.all().filter(InWater_flg=True)
+    elif "in_off" in request.GET:
+        datas = WRCSAll.objects.all().filter(InWater_flg=False)
+    elif request.POST:
+        ras = request.POST["ras"]
+        ras_num = -1; ras_pos = "all"
+        try:
+            ras_num = int(ras)
+        except ValueError:
+            ras_pos = ras
+        if ras_num != -1 and ras_pos != "all":
+            datas = WRCSAll.objects.all().filter(ras_id=ras_num, ras_point=ras_pos)
+        elif ras_num != -1:
+            datas = WRCSAll.objects.all().filter(ras_id=ras_num)
+        elif ras_pos != "all":
+            datas = WRCSAll.objects.all().filter(ras_point=ras_pos)
+        else:
+            datas = WRCSAll.objects.all()
+    else:
+        datas = WRCSAll.objects.all()
+    return render(request, 'wrcsystem/data_in.html', {'datas': datas})
+
+#水温データの一覧
+def data_water_temp(request):
+    if "date_asc" in request.GET:
+        datas = WRCSAll.objects.order_by('date').all()
+    elif "date_desc" in request.GET:
+        datas = WRCSAll.objects.order_by('-date').all()
+    elif "water_temp_asc" in request.GET:
+        datas = WRCSAll.objects.order_by('water_temperature').all()
+    elif "water_temp_desc" in request.GET:
+        datas = WRCSAll.objects.order_by('-water_temperature').all()
+    elif request.POST:
+        ras = request.POST["ras"]
+        ras_num = -1; ras_pos = "all"
+        try:
+            ras_num = int(ras)
+        except ValueError:
+            ras_pos = ras
+        if ras_num != -1 and ras_pos != "all":
+            datas = WRCSAll.objects.all().filter(ras_id=ras_num, ras_point=ras_pos)
+        elif ras_num != -1:
+            datas = WRCSAll.objects.all().filter(ras_id=ras_num)
+        elif ras_pos != "all":
+            datas = WRCSAll.objects.all().filter(ras_point=ras_pos)
+        else:
+            datas = WRCSAll.objects.all()
+    else:
+        datas = WRCSAll.objects.all()
+    return render(request, 'wrcsystem/data_water_temp.html', {'datas': datas})
+
+#地盤データの一覧
+def data_ground(request):
+    if "date_asc" in request.GET:
+        datas = WRCSAll.objects.order_by('date').all()
+    elif "date_desc" in request.GET:
+        datas = WRCSAll.objects.order_by('-date').all()
+    elif "ground_level_asc" in request.GET:
+        datas = WRCSAll.objects.order_by('ground_altitude').all()
+    elif "ground_level_desc" in request.GET:
+        datas = WRCSAll.objects.order_by('-ground_altitude').all()
+    elif request.POST:
+        ras = request.POST["ras"]
+        ras_num = -1; ras_pos = "all"
+        try:
+            ras_num = int(ras)
+        except ValueError:
+            ras_pos = ras
+        if ras_num != -1 and ras_pos != "all":
+            datas = WRCSAll.objects.all().filter(ras_id=ras_num, ras_point=ras_pos)
+        elif ras_num != -1:
+            datas = WRCSAll.objects.all().filter(ras_id=ras_num)
+        elif ras_pos != "all":
+            datas = WRCSAll.objects.all().filter(ras_point=ras_pos)
+        else:
+            datas = WRCSAll.objects.all()
+    else:
+        datas = WRCSAll.objects.all()
+    return render(request, 'wrcsystem/data_ground.html', {'datas': datas})
+
+#ラズパイからデータ受信
+@csrf_exempt
+def raspost_all(request):
+    datas = WRCSAll(date=timezone.now,
+                    ras_id=request.POST["ras_id"],
+                    ras_point=request.POST["ras_point"],
+                    OutWater_flg=request.POST["OutWater_flg"],
+                    InWater_flg=request.POST["InWater_flg"],
+                    water_level=request.POST["water_level"],
+                    water_level_flg=request.POST["water_level_flg"],
+                    water_temperature=request.POST["water_temperature"],
+                    ground_altitude=request.POST["ground_altitude"])
+    datas.save()
+    print(datas)
+    print("RAS-POST-OK")
+    return render(request, 'wrcsystem/ras_post.html')
 
 #アンケートホーム
 def survey(request):

@@ -1,31 +1,34 @@
-<!DOCTYPE html>
+{% extends 'account/base.html' %}
 {% load static %}
-<html lang="ja" dir="ltr">
-<head>
-<meta charset="utf-8">
-<link rel="stylesheet" href="{% static "css/account.css" %}"/>
-
-</head>
-<body>
-  <h1>ログイン画面</h1>
-  <div class="reg">
-    <form method="POST" action="{% url 'Login' %}">
-      {% csrf_token %}
-      <table class="reg_form">
-        <tr>
-          <td><label for="userid">ユーザーID:</label></td>
-          <td><input type="text" name="userid"></td>
-          <td><label for="password">パスワード：</label></td>
-          <td><input type="password" name="password"></td>
-        </tr>
-      </table>
-      <input type="submit" class="btn" value="Login">
-    </form>
-      <p class="message">アカウントをお持ちですか？：
-      <a href="{% url 'register' %}">アカウントを作成</a>
-      </p>
-      <a href="{% url 'index' %}">ホームへ戻る</a>
-      <br>
+{% block content %}
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+  <script type="text/javascript" src="{% static 'js/timer.js' %}"></script>
+  <div class="main">
+    <div class="canvas">
+      <div class="content">
+        <div class="wellcome">ログイン画面</div>
+        <div class="time">
+          <h2 id="RealtimeClockArea"></h2>
+        </div>
+        <div class="reg">
+          <form method="POST" action="{% url 'Login' %}">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-3"></div>
+              <div class="col-3"><input type="text" name="userid" class= "form-control" placeholder="ユーザーID" required></div>
+              <div class="col-3"><input type="password" name="password" class= "form-control" placeholder="パスワード" required></div>
+              <div class="col-1"><input type="submit" class="btn btn-outline-primary" value="Login"></div>
+            </div><br>
+          </form>
+          <div class="row">
+            <div class="col-3"></div>
+            <div class="col-3"><a href="{% url 'register' %}" class="btn btn-outline-primary">アカウントを作成</a></div>
+            <div class="col-3"><a href="{% url 'index' %}" class="btn btn-outline-secondary">ホームへ戻る</a></div>
+            <div class="col-3"></div>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
   </div>
-</body>
-</html>
+{% endblock %}

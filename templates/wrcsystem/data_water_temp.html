@@ -1,0 +1,57 @@
+{% extends 'wrcsystem/index.html' %}
+{% load static %}
+
+{% block listcontent %}
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+      <div class="table-responsive" style="white-space: nowrap">
+        <table class="table table-hover ">
+            <thead>
+                <tr>
+                    <th>データ取得日時</th>
+                    <th>貯水槽番号</th>
+                    <th>貯水槽の場所</th>
+                    <th>水温</th>
+                </tr>
+                <tr>
+                  <th>
+                    <form action="/data_water_temp" method="GET">
+                      {% csrf_token %}
+                      <button type="submit" name="date_asc" class="btn btn-outline-primary btn-sm">昇順</button>
+                      <button type="submit" name="date_desc" class="btn btn-outline-primary btn-sm">降順</button>
+                    </form>
+                  </th>
+                  <th>
+                    <form action="/data_water_temp" method="POST" id="ras_id" onsubmit="return func1()">
+                      {% csrf_token %}
+                      <input type="number" name="ras" placeholder="0" style="width:50px; margin-top:22px; border:solid;">
+                    </form>
+                  </th>
+                  <th>
+                    <form action="/data_water_temp" method="POST" id="ras_point" onsubmit="return func1()">
+                      {% csrf_token %}
+                      <input type="text" name="ras" placeholder="〇〇市" style="width:100px; margin-top:22px; border:solid;"></th>
+                    </form>
+                  </th>
+                  <th>
+                    <form action="/data_water_temp" method="GET">
+                      {% csrf_token %}
+                      <button type="submit" name="water_temp_asc" class="btn btn-outline-primary btn-sm">昇順</button>
+                      <button type="submit" name="water_temp_desc" class="btn btn-outline-primary btn-sm">降順</button>
+                    </form>
+                  </th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for data in datas %}
+                <tr>
+                    <td>{{ data.date }}</td>
+                    <td>{{ data.ras_id}}</td>
+                    <td>{{ data.ras_point}}</td>
+                    <td>{{ data.water_temperature}}℃</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    <br>
+{% endblock %}
