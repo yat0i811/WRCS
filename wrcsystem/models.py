@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 class WRCSAll(models.Model):
-    date = models.DateTimeField(null=False,default=timezone.now) #データ取得日時
+    ras_name = models.CharField(max_length=16,null=True,default="NoName") #機体名
+    date = models.DateTimeField(default=timezone.now) #データ取得日時
     ras_id = models.IntegerField(null=False,default=-1) #貯水槽ID
     ras_point = models.CharField(null=False,default="No Point",max_length=16) #貯水槽の場所
     OutWater_flg = models.BooleanField(help_text="散水中ならTrue",null=True,default=False) #散水状況
@@ -15,6 +16,8 @@ class WRCSAll(models.Model):
     water_level_flg = models.BooleanField(help_text="貯水量50%以上ならTrue",null=True,default=False) #貯水量フラグ
     water_temperature = models.DecimalField(max_digits=5,decimal_places=3,null=True,default=0) #水温データ
     ground_altitude = models.DecimalField(max_digits=5,decimal_places=3,null=True,default=0)#地盤高度データ
+    def __str__(self):
+        return self.ras_name
 
 class TestPost(models.Model):
     title = models.CharField(max_length=200)

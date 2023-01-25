@@ -381,19 +381,23 @@ def data_ground(request):
 #ラズパイからデータ受信
 @csrf_exempt
 def raspost_all(request):
-    datas = WRCSAll(date=timezone.now,
-                    ras_id=request.POST.get("ras_id"),
-                    ras_point=request.POST.get("ras_point"),
-                    OutWater_flg=request.POST.get("OutWater_flg"),
-                    InWater_flg=request.POST.get("InWater_flg"),
-                    water_level=request.POST.get("water_level"),
-                    water_level_flg=request.POST.get("water_level_flg"),
-                    water_temperature=request.POST.get("water_temperature"),
-                    ground_altitude=request.POST.get("ground_altitude"))
-    datas.save()
-    print(datas)
-    print("RAS-POST-OK")
-    return render(request, 'wrcsystem/ras_post.html')
+    if request.method == "GET":
+        print("RAS-GET-OK")
+        return render(request, 'wrcsystem/ras_post.html')
+    elif request.method == "POST":
+        datas = WRCSAll(ras_name=request.POST.get("ras_name"),
+                        ras_id=request.POST.get("ras_id"),
+                        ras_point=request.POST.get("ras_point"),
+                        OutWater_flg=request.POST.get("OutWater_flg"),
+                        InWater_flg=request.POST.get("InWater_flg"),
+                        water_level=request.POST.get("water_level"),
+                        water_level_flg=request.POST.get("water_level_flg"),
+                        water_temperature=request.POST.get("water_temperature"),
+                        ground_altitude=request.POST.get("ground_altitude"))
+        datas.save()
+        print(datas)
+        print("RAS-POST-OK")
+        return render(request, 'wrcsystem/ras_post.html')
 
 @csrf_exempt
 def raspost_access_check(request):
