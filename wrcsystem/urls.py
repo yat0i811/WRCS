@@ -15,6 +15,7 @@ urlpatterns = [
     path("data_ground",views.data_ground,name="data_ground"),
     
     path('raspost_all', views.raspost_all, name="raspost_all" ),
+    path('raspost_access_check', views.raspost_access_check, name="raspost_access_check" ),
     
     path('test_list', views.test_list, name='test_list'),
     path('water_temperature_list', views.water_temperature_list, name='water_temperature_list'),
